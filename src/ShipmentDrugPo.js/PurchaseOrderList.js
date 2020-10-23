@@ -21,6 +21,7 @@ export default class ManufacturerList extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
+    this.onViewDialogClosed = this.onViewDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -30,6 +31,7 @@ export default class ManufacturerList extends React.Component {
   });
 
   onDialogClosed(data) {
+    console.log("here ------11222");
     if (data && data.companyCRN != "") {
       console.log(data);
       var manufacturerData = this.state.row;
@@ -38,6 +40,7 @@ export default class ManufacturerList extends React.Component {
         row: manufacturerData,
       });
     }
+    console.log("here ------");
     this.setState({
       openCreateOrganizationDialogue: false,
     });
@@ -56,7 +59,7 @@ export default class ManufacturerList extends React.Component {
     });
   }
 
-  onDialogClosed() {
+  onViewDialogClosed() {
     console.log("On Dialog Closed");
     this.setState({
       showPurchaseOrderDetails: false,
@@ -111,7 +114,7 @@ export default class ManufacturerList extends React.Component {
         <PurchaseOrderDetails
           purchaseOrderDetials={this.state.purchaseOrderDetials}
           openViewPurchaseDialog={this.state.showPurchaseOrderDetails}
-          onDialogClosed={this.onDialogClosed}
+          onDialogClosed={this.onViewDialogClosed}
         />
       </div>
     );

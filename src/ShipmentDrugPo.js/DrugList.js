@@ -7,14 +7,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import RetailDrugDialogue from "../DialogueForms/RetailDrugDialogue";
+import CreateDrugDialogue from "../DialogueForms/CreateDrugDialogue";
 
 export default class DrugList extends React.Component {
   constructor(props) {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
-      openCreateOrganizationDialogue: false,
+      shouldShowCreateDrugDialog: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -37,13 +37,13 @@ export default class DrugList extends React.Component {
       });
     }
     this.setState({
-      openCreateOrganizationDialogue: false,
+      shouldShowCreateDrugDialog: false,
     });
   }
 
   handleClick() {
     this.setState({
-      openCreateOrganizationDialogue: true,
+      shouldShowCreateDrugDialog: true,
     });
   }
 
@@ -82,9 +82,9 @@ export default class DrugList extends React.Component {
         >
           Create Drug
         </button>
-        <RetailDrugDialogue
-          openCreateOrganizationDialogue={
-            this.state.openCreateOrganizationDialogue
+        <CreateDrugDialogue
+          shouldShowCreateDrugDialog={
+            this.state.shouldShowCreateDrugDialog
           }
           onDialogClosed={this.onDialogClosed}
         />

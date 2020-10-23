@@ -21,7 +21,7 @@ export default class CreateDrugDialogue extends React.Component {
     return (
       <div>
         <Dialog
-          open={this.props.openCreateDrugDialogue}
+          open={this.props.shouldShowCreateDrugDialog}
           onClose={() => this.props.onDialogClosed()}
           aria-labelledby="form-dialog-title"
         >
