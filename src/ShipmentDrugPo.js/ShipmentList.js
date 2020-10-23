@@ -7,14 +7,14 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Registerorganization from "../DialogueForms/Registerorganization";
+import CreateShipmentDialogue from "../DialogueForms/CreateShipmentDialogue";
 
-export default class RetailerList extends React.Component {
+export default class ShipmentList extends React.Component {
   constructor(props) {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
-      openCreateOrganizationDialogue: false,
+      openCreateShipmentDialogue: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -37,13 +37,13 @@ export default class RetailerList extends React.Component {
       });
     }
     this.setState({
-      openCreateOrganizationDialogue: false,
+      openCreateShipmentDialogue: false,
     });
   }
 
   handleClick() {
     this.setState({
-      openCreateOrganizationDialogue: true,
+      openCreateShipmentDialogue: true,
     });
   }
 
@@ -77,10 +77,8 @@ export default class RetailerList extends React.Component {
         >
           Create Shipment
         </button>
-        <Registerorganization
-          openCreateOrganizationDialogue={
-            this.state.openCreateOrganizationDialogue
-          }
+        <CreateShipmentDialogue
+          openCreateShipmentDialogue={this.state.openCreateShipmentDialogue}
           onDialogClosed={this.onDialogClosed}
         />
       </div>

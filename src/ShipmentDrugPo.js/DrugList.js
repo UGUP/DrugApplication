@@ -7,18 +7,20 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import RetailDrugDialogue from "../DialogueForms/RetailDrugDialogue";
+import CreateDrugDialogue from "../DialogueForms/CreateDrugDialogue";
+import ViewDrugDetailsDialogue from "../DialogueForms/ViewDrugDetailsDialogue";
 
 export default class DrugList extends React.Component {
   constructor(props) {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
-      openCreateOrganizationDialogue: false,
+      openCreateDrugDialogue: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
+    this.onDrugDetailsDialogClosed = this.onDrugDetailsDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -37,13 +39,26 @@ export default class DrugList extends React.Component {
       });
     }
     this.setState({
-      openCreateOrganizationDialogue: false,
+      openCreateDrugDialogue: false,
+    });
+  }
+
+  onDrugDetailsDialogClosed() {
+    this.setState({
+      showViewDrugDetailsDialogue: false,
+    });
+  }
+
+  showViewDrugDetailsDialogue(drug) {
+    this.setState({
+      CreateDrugDialogue: drug,
+      showViewDrugDetailsDialogue: true,
     });
   }
 
   handleClick() {
     this.setState({
-      openCreateOrganizationDialogue: true,
+      openCreateDrugDialogue: true,
     });
   }
 
@@ -69,7 +84,13 @@ export default class DrugList extends React.Component {
                   <TableCell align="right">{row.mDate}</TableCell>
                   <TableCell align="right">{row.eDate}</TableCell>
                   <TableCell align="right">{row.companyCrn}</TableCell>
-                  <button>View History</button>
+                  <button
+                    onClick={() => {
+                      this.showViewDrugDetailsDialogue(row);
+                    }}
+                  >
+                    View Details
+                  </button>
                 </TableRow>
               ))}
             </TableBody>
@@ -82,11 +103,14 @@ export default class DrugList extends React.Component {
         >
           Create Drug
         </button>
-        <RetailDrugDialogue
-          openCreateOrganizationDialogue={
-            this.state.openCreateOrganizationDialogue
-          }
+        <CreateDrugDialogue
+          openCreateDrugDialogue={this.state.openCreateDrugDialogue}
           onDialogClosed={this.onDialogClosed}
+        />
+        <ViewDrugDetailsDialogue
+          ViewDrugDetailsDialogue={this.state.ViewDrugDetailsDialogue}
+          openViewDrugDetailsDialogue={this.state.showViewDrugDetailsDialogue}
+          onDrugDetailsDialogClosed={this.onDrugDetailsDialogClosed}
         />
       </div>
     );
@@ -99,21 +123,21 @@ export default class DrugList extends React.Component {
       sno: "123433d3r3f234",
       mDate: "20-02-2020",
       eDate: "20-02-2025",
-      companyCrn: "location"
+      companyCrn: "location",
     });
     dummyData.push({
       drugName: "Zupar",
       sno: "123433d3r3f234",
       mDate: "20-02-2020",
       eDate: "20-02-2025",
-      companyCrn: "location"
+      companyCrn: "location",
     });
     dummyData.push({
       drugName: "Sumo",
       sno: "123433d3r3f234",
       mDate: "20-02-2020",
       eDate: "20-02-2025",
-      companyCrn: "location"
+      companyCrn: "location",
     });
     return dummyData;
   }

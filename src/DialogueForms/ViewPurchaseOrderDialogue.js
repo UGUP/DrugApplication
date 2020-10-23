@@ -9,7 +9,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default class ViewPurchaseOrderDialogue extends React.Component {
   constructor(props) {
-    super();
     console.log(JSON.stringify(props, null, 2));
   }
 
@@ -27,9 +26,7 @@ export default class ViewPurchaseOrderDialogue extends React.Component {
         >
           <DialogTitle id="form-dialog-title">View Purchase Orders</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Please enter the deatils to query the purchase orders
-            </DialogContentText>
+            <DialogContentText>Purchase Order Details</DialogContentText>
             <TextField
               autoFocus
               margin="dense"

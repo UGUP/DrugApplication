@@ -7,83 +7,81 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-export default class CreatePurchaseOrderDialogue extends React.Component {
+export default class ViewDrugDetailsDialogue extends React.Component {
   constructor(props) {
     super();
     console.log(JSON.stringify(props, null, 2));
   }
 
   componentDidMount() {
-    this.props.onPurchaseOrderDialogClosed();
+    this.props.onDrugDetailsDialogClosed();
   }
 
   render() {
     return (
       <div>
         <Dialog
-          open={this.props.openCreatePurchaseOrderDialogue}
-          onClose={() => this.props.onPurchaseOrderDialogClosed()}
+          open={this.props.openViewDrugDetailsDialogue}
+          onClose={() => this.props.onDrugDetailsDialogClosed()}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">
-            Create Purchase Orders
+            The details of the Drug
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Please enter the deatils to Create the purchase order
-            </DialogContentText>
+            <DialogContentText>The details of the Drug</DialogContentText>
             <TextField
               autoFocus
               margin="dense"
-              id="BuyerCRN"
-              label="BuyerCRN"
+              id="drug-name"
+              label="Drug Name"
               type="email"
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="SellerCRN"
-              label="SellerCRN"
+              id="serial-number"
+              label="Serial Number"
               type="email"
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="DrugName"
-              label="DrugName"
+              id="manufacturer-date"
+              label="Manufacturer Date"
               type="email"
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="Quantity"
-              label="Quantity"
+              id="expiry-date"
+              label="Expiry Date"
               type="email"
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="ListOfAssets"
-              label="ListOfAssets"
+              id="company-crn"
+              label="Company CRN"
               type="email"
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="OrganizationRole"
-              label="OrganizationRole"
+              id="organization-role"
+              label="Organization Role"
               type="email"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.props.onPurchaseOrderDialogClosed}
+              onClick={this.props.onDrugDetailsDialogClosed}
               color="primary"
             >
               Cancel

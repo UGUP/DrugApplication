@@ -7,20 +7,23 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Registerorganization from "../DialogueForms/Registerorganization";
 import PurchaseOrderDetails from "./PurchaseOrderDetails";
+import CreatePurchaseOrderDialogue from "../DialogueForms/CreatePurchaseOrderDialogue";
 
 export default class ManufacturerList extends React.Component {
   constructor(props) {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
-      openCreateOrganizationDialogue: false,
+      onPurchaseOrderDialogClosed: false,
       showPurchaseOrderDetails: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
+    this.onPurchaseOrderDialogClosed = this.onPurchaseOrderDialogClosed.bind(
+      this
+    );
   }
 
   useStyles = makeStyles({
@@ -29,7 +32,7 @@ export default class ManufacturerList extends React.Component {
     },
   });
 
-  onDialogClosed(data) {
+  onPurchaseOrderDialogClosed(data) {
     if (data && data.companyCRN != "") {
       console.log(data);
       var manufacturerData = this.state.row;
@@ -39,25 +42,24 @@ export default class ManufacturerList extends React.Component {
       });
     }
     this.setState({
-      openCreateOrganizationDialogue: false,
+      openCreatePurchaseOrderDialogue: false,
     });
   }
 
   handleClick() {
     this.setState({
-      openCreateOrganizationDialogue: true,
+      openCreatePurchaseOrderDialogue: true,
     });
   }
 
   showPurchaseOrderDetails(purchaseOrder) {
     this.setState({
-      purchaseOrderDetials: purchaseOrder,
+      purchaseOrderDetails: purchaseOrder,
       showPurchaseOrderDetails: true,
     });
   }
 
   onDialogClosed() {
-    console.log("On Dialog Closed");
     this.setState({
       showPurchaseOrderDetails: false,
     });
@@ -102,11 +104,11 @@ export default class ManufacturerList extends React.Component {
         >
           Create Purchase Order
         </button>
-        <Registerorganization
-          openCreateOrganizationDialogue={
-            this.state.openCreateOrganizationDialogue
+        <CreatePurchaseOrderDialogue
+          openCreatePurchaseOrderDialogue={
+            this.state.openCreatePurchaseOrderDialogue
           }
-          onDialogClosed={this.onDialogClosed}
+          onPurchaseOrderDialogClosed={this.onPurchaseOrderDialogClosed}
         />
         <PurchaseOrderDetails
           purchaseOrderDetials={this.state.purchaseOrderDetials}
