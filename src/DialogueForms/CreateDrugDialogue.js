@@ -11,13 +11,14 @@ export default class CreateDrugDialogue extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      showProgress: false,
-    };
+      drugName: "",
+      serialNo: "",
+      mfgDate: "",
+      expDate: "",
+      companyCRN: "",
+      organization: "manufacturer"
+    }
     console.log(JSON.stringify(props, null, 2));
-  }
-
-  componentDidMount() {
-    this.props.onDialogClosed();
   }
 
   render() {
@@ -39,6 +40,10 @@ export default class CreateDrugDialogue extends React.Component {
               id="drug-name"
               label="Drug Name"
               type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ drugName: value });
+              }}
               fullWidth
             />
             <TextField
@@ -47,6 +52,10 @@ export default class CreateDrugDialogue extends React.Component {
               id="serial-number"
               label="Serial Number"
               type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ serialNo: value });
+              }}
               fullWidth
             />
             <TextField
@@ -55,6 +64,10 @@ export default class CreateDrugDialogue extends React.Component {
               id="manufacturer-date"
               label="ManufacturingDate"
               type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ mfgDate: value });
+              }}
               fullWidth
             />
             <TextField
@@ -63,6 +76,10 @@ export default class CreateDrugDialogue extends React.Component {
               id="expiry-date"
               label="ExpiryDate"
               type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ expDate: value });
+              }}
               fullWidth
             />
             <TextField
@@ -71,22 +88,18 @@ export default class CreateDrugDialogue extends React.Component {
               id="company-crn"
               label="CompanyCRN"
               type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="organization-role"
-              label="Organization Role"
-              type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ companyCRN: value });
+              }}
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={this.props.onDialogClosed(this.state)} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={this.props.onDialogClosed(this.state)} color="primary">
               Create Drug
             </Button>
           </DialogActions>

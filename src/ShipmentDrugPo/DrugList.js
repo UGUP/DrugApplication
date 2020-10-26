@@ -12,13 +12,13 @@ import ViewDrugDetailsDialogue from "../DialogueForms/ViewDrugDetailsDialogue";
 import { invokeTransaction, METHOD_CREATE_DRUG } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ViewDrugDetails from "./ViewDrugDetails";
 
 const toast = ToastServive.new({
   place: "topRight",
   duration: 4,
   maxCount: 1,
 });
-import ViewDrugDetails from "./ViewDrugDetails";
 
 export default class DrugList extends React.Component {
   constructor(props) {
@@ -43,12 +43,13 @@ export default class DrugList extends React.Component {
   });
 
   onDialogClosed(data) {
+    console.log("Hello......");
     if (data && data.companyCRN != "") {
       this.createNewDrug(data);
     }
-    this.setState({
-      openCreateDrugDialogue: false,
-    });
+    // this.setState({
+    //   openCreateDrugDialogue: false,
+    // });
   }
 
   onViewDrugDetailsDialogClosed() {
@@ -139,24 +140,27 @@ export default class DrugList extends React.Component {
     let dummyData = [];
     dummyData.push({
       drugName: "Combliflam",
-      sno: "123433d3r3f234",
-      mDate: "20-02-2020",
-      eDate: "20-02-2025",
-      companyCrn: "location",
+      serialNo: "123433d3r3f234",
+      mfgDate: "20-02-2020",
+      expDate: "20-02-2025",
+      companyCRN: "001",
+      organization: "organization",
     });
     dummyData.push({
       drugName: "Zupar",
-      sno: "123433d3r3f234",
-      mDate: "20-02-2020",
+      serialNo: "123433d3r3f234",
+      mfgDate: "20-02-2020",
       eDate: "20-02-2025",
-      companyCrn: "location",
+      companyCRN: "002",
+      organization: "organization",
     });
     dummyData.push({
       drugName: "Sumo",
-      sno: "123433d3r3f234",
-      mDate: "20-02-2020",
-      eDate: "20-02-2025",
-      companyCrn: "location",
+      serialNo: "123433d3r3f234",
+      mfgDate: "20-02-2020",
+      expDate: "20-02-2025",
+      companyCRN: "003",
+      organization: "organization",
     });
     return dummyData;
   }
@@ -164,14 +168,15 @@ export default class DrugList extends React.Component {
   createNewDrug(data) {
     const args = [];
     args.push(data.drugName);
-    args.push(data.serialNumber);
-    args.push(data.manufacturingDate);
-    args.push(data.expiryDate);
+    args.push(data.serialNo);
+    args.push(data.mfgDate);
+    args.push(data.eDate);
     args.push(data.companyCRN);
     args.push("manufacturer");
     this.setState({
       showProgress: true,
     });
+
     invokeTransaction(METHOD_CREATE_DRUG, args)
       .then((response) => {
         this.setState({

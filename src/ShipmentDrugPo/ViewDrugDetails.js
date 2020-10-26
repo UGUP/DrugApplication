@@ -80,8 +80,8 @@ export default class ViewDrugDetails extends React.Component {
     if (this.props.openViewDrugDetailsDialog) {
       //this.getCurrentStatusOfShipment(this.props.drugName, this.props.sno)
       const args = [];
-      args.push("Paracetamol");
-      args.push("001");
+      args.push(drugName);
+      args.push(sno);
       this.setState({
         showProgress: true,
       });
