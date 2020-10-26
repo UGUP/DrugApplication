@@ -1,10 +1,9 @@
 import React from "react";
 import DistributorMenu from "./DistributorMenu";
-import DrugList from "../ShipmentDrugPo.js/DrugList";
+import DistributorDrugList from "../ShipmentDrugPo.js/DistributorDrugList";
 import PurchaseOrderList from "../ShipmentDrugPo.js/PurchaseOrderList";
 import ShipmentList from "../ShipmentDrugPo.js/ShipmentList";
 import Button from "@material-ui/core/Button";
-import RegisterOrganization from "../DialogueForms/Registerorganization";
 import styled from "styled-components";
 
 const StyleDiv = styled.div`
@@ -61,13 +60,13 @@ class DistributorDashboard extends React.Component {
           {(() => {
             switch (this.state.selectmenu) {
               case "drug":
-                return <DrugList />;
+                return <DistributorDrugList />;
               case "purcahse-order":
                 return <PurchaseOrderList />;
               case "shipment":
                 return <ShipmentList />;
               default:
-                return <DrugList />;
+                return <DistributorDrugList />;
             }
           })()}
         </StyleDiv>
