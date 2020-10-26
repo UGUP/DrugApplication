@@ -8,6 +8,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Registerorganization from '../DialogueForms/Registerorganization'
+import { invokeTransaction, METHOD_REGISTER_COMPANY } from '../network/NetworkApi'
+import ToastServive from 'react-material-toast';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const toast = ToastServive.new({
+  place: 'topRight',
+  duration: 4,
+  maxCount: 1
+});
 
 export default class ManufacturerList extends React.Component {
 
@@ -15,14 +24,15 @@ export default class ManufacturerList extends React.Component {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
-      openCreateOrganizationDialogue: false
+      openCreateOrganizationDialogue: false,
+      showProgress: false
     }
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
   }
 
-   useStyles = makeStyles({
+  useStyles = makeStyles({
     table: {
       minWidth: 650,
     },
@@ -30,12 +40,7 @@ export default class ManufacturerList extends React.Component {
 
   onDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      console.log(data);
-      var manufacturerData = this.state.row;
-      manufacturerData.push(data);
-      this.setState({
-        row: manufacturerData
-      })
+      this.createNewOrganization(data);
     }
     this.setState({
       openCreateOrganizationDialogue: false
@@ -51,50 +56,101 @@ export default class ManufacturerList extends React.Component {
   render() {
     return (
       <div>
-      <TableContainer component={Paper}>
-        <Table className={{minWidth: 650}} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="right">Company CRN</TableCell>
-              <TableCell align="right">Company Name</TableCell>
-              <TableCell align="right">Location</TableCell>
-            </TableRow> 
-          </TableHead>
-          <TableBody>
-            {this.state.row.map((row) => (
-              <TableRow key={row.companyCRN}>
-                <TableCell align="right">{row.companyCRN}</TableCell>
-                <TableCell align="right">{row.companyName}</TableCell>
-                <TableCell align="right">{row.location}</TableCell>
+        {(() => {
+          if (this.state.showProgress) {
+            return (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <CircularProgress color="secondary" />
+              </div>
+            )
+          }
+        })()}
+        <TableContainer component={Paper}>
+          <Table className={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="right">Company CRN</TableCell>
+                <TableCell align="right">Company Name</TableCell>
+                <TableCell align="right">Location</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <button onClick={() => {this.handleClick()}}>Create Organization</button>
-      <Registerorganization openCreateOrganizationDialogue={this.state.openCreateOrganizationDialogue} onDialogClosed={this.onDialogClosed}/>
+            </TableHead>
+            <TableBody>
+              {this.state.row.map((row) => (
+                <TableRow key={row.companyCRN}>
+                  <TableCell align="right">{row.companyCRN}</TableCell>
+                  <TableCell align="right">{row.companyName}</TableCell>
+                  <TableCell align="right">{row.location}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <button onClick={() => { this.handleClick() }}>Create Organization</button>
+        <Registerorganization openCreateOrganizationDialogue={this.state.openCreateOrganizationDialogue} onDialogClosed={this.onDialogClosed} />
       </div>
     );
- }
+  }
 
- initiStateWithDummyData() {
-  let dummyData = [];
-  dummyData.push({
-     "companyCRN":"MAN001",
-     "companyName":"Sun Pharma1",
-     "location":"location"
-   });
-   dummyData.push({
-    "companyCRN":"MAN002",
-    "companyName":"Sun Pharma2",
-    "location":"location2"
-  });
-  dummyData.push({
-    "companyCRN":"MAN003",
-    "companyName":"Sun Pharma3",
-    "location":"location3"
-  });
-  return dummyData;
- }
-  
+  initiStateWithDummyData() {
+    let dummyData = [];
+    dummyData.push({
+      "companyCRN": "MAN001",
+      "companyName": "Sun Pharma1",
+      "location": "location"
+    });
+    dummyData.push({
+      "companyCRN": "MAN002",
+      "companyName": "Sun Pharma2",
+      "location": "location2"
+    });
+    dummyData.push({
+      "companyCRN": "MAN003",
+      "companyName": "Sun Pharma3",
+      "location": "location3"
+    });
+    return dummyData;
+  }
+
+  createNewOrganization(data) {
+    const args = [];
+    args.push(data.companyCRN)
+    args.push(data.companyName)
+    args.push(data.location)
+    args.push("manufacturer")
+    this.setState({
+      showProgress: true
+    })
+    invokeTransaction(METHOD_REGISTER_COMPANY, args)
+      .then((response) => {
+        this.setState({
+          showProgress: false
+        })
+        if (response.status === 400) {
+          this.showToast(true);
+        } else if (response.status === 201) {
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData
+          })
+          this.showToast(false);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false
+        })
+        this.showToast(true);
+      });
+  }
+
+  showToast(error) {
+    if (error) {
+      toast.error('Organization already exists!!');
+    } else {
+      toast.success("Organization created successfully.");
+    }
+  }
+
 }

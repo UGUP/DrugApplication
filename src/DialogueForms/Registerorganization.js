@@ -12,11 +12,10 @@ export default class Registerorganization extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      buyerCRN: "",
-      sellerCRN: "",
-      drugName: "",
-      quantity: "",
-      organizationRole: "distributor"
+      companyCRN: "",
+      companyName: "",
+      location: "",
+      organizationRole: "manufacturer"
     }
   }
 
@@ -42,42 +41,29 @@ export default class Registerorganization extends React.Component {
               type="email"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ buyerCRN: value });
+                this.setState({ companyCRN: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="sellerCRN"
-              label="Seller CRN"
-              type="email"
+              id="companyName"
+              label="Company Name"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ sellerCRN: value });
+                this.setState({ companyName: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="drugName"
-              label="Drug Name"
-              type="email"
+              id="location"
+              label="Location"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ drugName: value });
-              }}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="quanity"
-              label="Quantity"
-              onChange={event => {
-                const { value } = event.target;
-                this.setState({ quantity: value });
+                this.setState({ location: value });
               }}
               fullWidth
             />
