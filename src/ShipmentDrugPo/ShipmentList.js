@@ -7,7 +7,20 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import updateShipmentDialogue from "../DialogueForms/UpdateShipmentDialogue";
 import CreateShipmentDialogue from "../DialogueForms/CreateShipmentDialogue";
+import {
+  invokeTransaction,
+  METHOD_CREATE_SHIPMENT,
+} from "../network/NetworkApi";
+import ToastServive from "react-material-toast";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+const toast = ToastServive.new({
+  place: "topRight",
+  duration: 4,
+  maxCount: 1,
+});
 
 export default class ShipmentList extends React.Component {
   constructor(props) {
@@ -15,6 +28,7 @@ export default class ShipmentList extends React.Component {
     this.state = {
       row: this.initiStateWithDummyData(),
       openCreateShipmentDialogue: false,
+      showShipmentDetails: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -29,15 +43,16 @@ export default class ShipmentList extends React.Component {
 
   onDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      console.log(data);
-      var retailerData = this.state.row;
-      retailerData.push(data);
-      this.setState({
-        row: retailerData,
-      });
+      this.createNewShipment(data);
     }
     this.setState({
       openCreateShipmentDialogue: false,
+    });
+  }
+
+  onShipmentDialogClosed(data) {
+    this.setState({
+      openUpdateShipmentDialogue: false,
     });
   }
 
@@ -47,9 +62,25 @@ export default class ShipmentList extends React.Component {
     });
   }
 
+  showShipmentDetails(shipment) {
+    this.setState({
+      updateShipmentDialogue: shipment,
+      showShipmentDetails: true,
+    });
+  }
+
   render() {
     return (
       <div>
+        {(() => {
+          if (this.state.showProgress) {
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="secondary" />
+              </div>
+            );
+          }
+        })()}
         <TableContainer component={Paper}>
           <Table className={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -65,6 +96,13 @@ export default class ShipmentList extends React.Component {
                   <TableCell align="right">{row.companyCRN}</TableCell>
                   <TableCell align="right">{row.companyName}</TableCell>
                   <TableCell align="right">{row.location}</TableCell>
+                  <button
+                    onClick={() => {
+                      this.showShipmentDetails(row);
+                    }}
+                  >
+                    update Shipment
+                  </button>
                 </TableRow>
               ))}
             </TableBody>
@@ -80,6 +118,10 @@ export default class ShipmentList extends React.Component {
         <CreateShipmentDialogue
           openCreateShipmentDialogue={this.state.openCreateShipmentDialogue}
           onDialogClosed={this.onDialogClosed}
+        />
+        <updateShipmentDialogue
+          openUpdateShipmentDialogue={this.state.openUpdateShipmentDialogue}
+          onShipmentDialogClosed={this.onShipmentDialogClosed}
         />
       </div>
     );
@@ -103,5 +145,46 @@ export default class ShipmentList extends React.Component {
       location: "MP",
     });
     return dummyData;
+  }
+
+  createNewShipment(data) {
+    const args = [];
+    args.push(data.companyCRN);
+    args.push(data.companyName);
+    args.push(data.location);
+    this.setState({
+      showProgress: true,
+    });
+    invokeTransaction(METHOD_CREATE_SHIPMENT, args)
+      .then((response) => {
+        this.setState({
+          showProgress: false,
+        });
+        if (response.status === 400) {
+          this.showToast(true);
+        } else if (response.status === 201) {
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData,
+          });
+          this.showToast(false);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true);
+      });
+  }
+
+  showToast(error) {
+    if (error) {
+      toast.error("Shipment already exists!!");
+    } else {
+      toast.success("Shipment created successfully.");
+    }
   }
 }

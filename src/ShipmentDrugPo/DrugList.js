@@ -12,13 +12,13 @@ import ViewDrugDetailsDialogue from "../DialogueForms/ViewDrugDetailsDialogue";
 import { invokeTransaction, METHOD_CREATE_DRUG } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ViewDrugDetails from "./ViewDrugDetails";
 
 const toast = ToastServive.new({
   place: "topRight",
   duration: 4,
   maxCount: 1,
 });
-import ViewDrugDetails from "./ViewDrugDetails";
 
 export default class DrugList extends React.Component {
   constructor(props) {
@@ -106,7 +106,14 @@ export default class DrugList extends React.Component {
                       this.showViewDrugDetailsDialogue(row);
                     }}
                   >
-                    View Details
+                    View Current State
+                  </button>
+                  <button
+                    onClick={() => {
+                      this.showViewDrugDetailsDialogue(row);
+                    }}
+                  >
+                    View History
                   </button>
                 </TableRow>
               ))}
@@ -163,7 +170,7 @@ export default class DrugList extends React.Component {
 
   createNewDrug(data) {
     const args = [];
-    args.push(data.drugName);
+    args.push(data.drugName1);
     args.push(data.serialNumber);
     args.push(data.manufacturingDate);
     args.push(data.expiryDate);

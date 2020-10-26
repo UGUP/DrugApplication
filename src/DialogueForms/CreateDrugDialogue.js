@@ -36,49 +36,73 @@ export default class CreateDrugDialogue extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="drug-name"
-              label="Drug Name"
+              id="drugName1"
+              label="DrugName"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ drugName1: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="serial-number"
-              label="Serial Number"
+              id="serialNumber"
+              label="SerialNumber"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ serialNumber: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="manufacturer-date"
+              id="manufacturingDate"
               label="ManufacturingDate"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ manufacturingDate: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="expiry-date"
+              id="expiryDate"
               label="ExpiryDate"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ expiryDate: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="company-crn"
+              id="companyCRN"
               label="CompanyCRN"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ companyCRN: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="organization-role"
+              id="organizationrole"
               label="Organization Role"
               type="email"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ organizationrole: value });
+              }}
               fullWidth
             />
           </DialogContent>
