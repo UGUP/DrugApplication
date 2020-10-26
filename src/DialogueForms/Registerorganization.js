@@ -12,15 +12,12 @@ export default class Registerorganization extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      companyCRN: "",
-      companyName: "",
-      location: "",
-      organizationRole: "manufacturer"
+      buyerCRN: "",
+      sellerCRN: "",
+      drugName: "",
+      quantity: "",
+      organizationRole: "distributor"
     }
-  }
-
-  componentDidMount() {
-    this.props.onDialogClosed();
   }
 
   render() {
@@ -45,31 +42,42 @@ export default class Registerorganization extends React.Component {
               type="email"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ companyCRN: value });
+                this.setState({ buyerCRN: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="companyName"
-              label="Company Name"
+              id="sellerCRN"
+              label="Seller CRN"
               type="email"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ companyName: value });
+                this.setState({ sellerCRN: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="Location"
-              label="Location"
+              id="drugName"
+              label="Drug Name"
               type="email"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ location: value });
+                this.setState({ drugName: value });
+              }}
+              fullWidth
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="quanity"
+              label="Quantity"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ quantity: value });
               }}
               fullWidth
             />

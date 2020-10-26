@@ -1,8 +1,8 @@
 import React from "react";
 import DistributorMenu from "./DistributorMenu";
-import DistributorDrugList from "../ShipmentDrugPo.js/DistributorDrugList";
-import PurchaseOrderList from "../ShipmentDrugPo.js/PurchaseOrderList";
-import ShipmentList from "../ShipmentDrugPo.js/ShipmentList";
+import DistributorDrugList from "../ShipmentDrugPo/DistributorDrugList";
+import PurchaseOrderList from "../ShipmentDrugPo/PurchaseOrderList";
+import ShipmentList from "../ShipmentDrugPo/ShipmentList";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 

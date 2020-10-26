@@ -1,8 +1,8 @@
 import React from "react";
 import ManufacturerMenu from "./ManufacturerMenu";
-import DrugList from "../ShipmentDrugPo.js/DrugList";
-import ManufacturerPOList from "../ShipmentDrugPo.js/ManufacturerPOList";
-import ShipmentList from "../ShipmentDrugPo.js/ShipmentList";
+import DrugList from "../ShipmentDrugPo/DrugList";
+import ManufacturerPOList from "../ShipmentDrugPo/ManufacturerPOList";
+import ShipmentList from "../ShipmentDrugPo/ShipmentList";
 import styled from "styled-components";
 
 const StyleDiv = styled.div`

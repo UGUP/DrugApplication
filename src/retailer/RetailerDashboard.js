@@ -1,8 +1,8 @@
 import React from "react";
 import RetailerMenu from "./RetailerMenu";
-import DrugList from "../ShipmentDrugPo.js/DrugList";
-import PurchaseOrderList from "../ShipmentDrugPo.js/PurchaseOrderList";
-import ShipmentList from "../ShipmentDrugPo.js/ShipmentList";
+import DrugList from "../ShipmentDrugPo/DrugList";
+import PurchaseOrderList from "../ShipmentDrugPo/PurchaseOrderList";
+import ShipmentList from "../ShipmentDrugPo/ShipmentList";
 import RegisterOrganization from "../DialogueForms/Registerorganization";
 import styled from "styled-components";
 

@@ -24,6 +24,8 @@ export default class ManufacturerList extends React.Component {
     this.onPurchaseOrderDialogClosed = this.onPurchaseOrderDialogClosed.bind(
       this
     );
+
+    this.onViewDialogClosed = this.onViewDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -41,6 +43,7 @@ export default class ManufacturerList extends React.Component {
         row: manufacturerData,
       });
     }
+    console.log("here ------");
     this.setState({
       openCreatePurchaseOrderDialogue: false,
     });
@@ -113,7 +116,7 @@ export default class ManufacturerList extends React.Component {
         <PurchaseOrderDetails
           purchaseOrderDetials={this.state.purchaseOrderDetials}
           openViewPurchaseDialog={this.state.showPurchaseOrderDetails}
-          onDialogClosed={this.onDialogClosed}
+          onDialogClosed={this.onViewDialogClosed}
         />
       </div>
     );
