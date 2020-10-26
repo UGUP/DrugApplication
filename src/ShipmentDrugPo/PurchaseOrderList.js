@@ -33,8 +33,6 @@ export default class ManufacturerList extends React.Component {
     this.onPurchaseOrderDialogClosed = this.onPurchaseOrderDialogClosed.bind(
       this
     );
-
-    // this.onViewDialogClosed = this.onViewDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -55,13 +53,6 @@ export default class ManufacturerList extends React.Component {
   handleClick() {
     this.setState({
       openCreatePurchaseOrderDialogue: true,
-    });
-  }
-
-  showPurchaseOrderDetails(purchaseOrder) {
-    this.setState({
-      purchaseOrderDetails: purchaseOrder,
-      showPurchaseOrderDetails: true,
     });
   }
 
@@ -100,13 +91,6 @@ export default class ManufacturerList extends React.Component {
                   <TableCell align="right">{row.sellerCRN}</TableCell>
                   <TableCell align="right">{row.drugName}</TableCell>
                   <TableCell align="right">{row.quantity}</TableCell>
-                  <button
-                    onClick={() => {
-                      this.showPurchaseOrderDetails(row);
-                    }}
-                  >
-                    View Details
-                  </button>
                 </TableRow>
               ))}
             </TableBody>
