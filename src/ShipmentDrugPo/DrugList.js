@@ -42,7 +42,7 @@ export default class DrugList extends React.Component {
     },
   });
 
-  onDialogClosed(data) {
+  onDialogClosed(data) {``
     console.log("Hello......");
     if (data && data.companyCRN != "") {
       this.createNewDrug(data);

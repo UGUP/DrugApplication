@@ -14,7 +14,7 @@ export default class UpdateShipmentDialogue extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onDialogClosed();
+    this.props.onShipmentDialogClosed();
   }
 
   render() {
@@ -22,7 +22,7 @@ export default class UpdateShipmentDialogue extends React.Component {
       <div>
         <Dialog
           open={this.props.openUpdateShipmentDialogue}
-          onClose={() => this.props.onDialogClosed()}
+          onClose={() => this.props.onShipmentDialogClosed()}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Update Shipment </DialogTitle>

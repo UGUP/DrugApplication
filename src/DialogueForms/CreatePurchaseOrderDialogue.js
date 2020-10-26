@@ -88,6 +88,12 @@ export default class CreatePurchaseOrderDialogue extends React.Component {
             >
               Cancel
             </Button>
+            <Button
+              onClick={this.props.onPurchaseOrderDialogClosed}
+              color="primary"
+            >
+              Submit
+            </Button>
           </DialogActions>
         </Dialog>
       </div>

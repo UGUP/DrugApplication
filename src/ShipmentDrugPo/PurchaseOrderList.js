@@ -74,6 +74,15 @@ export default class ManufacturerList extends React.Component {
   render() {
     return (
       <div>
+        {(() => {
+          if (this.state.showProgress) {
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="secondary" />
+              </div>
+            );
+          }
+        })()}
         <TableContainer component={Paper}>
           <Table className={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
