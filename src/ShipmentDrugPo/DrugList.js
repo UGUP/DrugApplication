@@ -100,13 +100,22 @@ export default class DrugList extends React.Component {
                   <TableCell align="right">{row.mDate}</TableCell>
                   <TableCell align="right">{row.eDate}</TableCell>
                   <TableCell align="right">{row.companyCrn}</TableCell>
+                  <div>
                   <button
                     onClick={() => {
                       this.showViewDrugDetailsDialogue(row);
                     }}
                   >
-                    View Details
+                    View Current State
                   </button>
+                  <button
+                    onClick={() => {
+                      this.showViewDrugDetailsDialogue(row);
+                    }}
+                  >
+                    View History
+                  </button>
+                  </div>
                 </TableRow>
               ))}
             </TableBody>
