@@ -159,47 +159,49 @@ export default class ManufacturerList extends React.Component {
     });
     return dummyData;
   }
+
   createNewPO(data) {
     const args = [];
     args.push(data.buyerCRN);
     args.push(data.sellerCRN);
     args.push(data.drugName);
     args.push(data.quantity);
-    args.push(data.organization);
     args.push("manufacturer");
     this.setState({
       showProgress: true,
     });
     invokeTransaction(METHOD_CREATE_PO, args)
       .then((response) => {
+        return response.json();
+      })
+      .then(response => {
         this.setState({
           showProgress: false,
         });
-        if (response.status === 400) {
-          this.showToast(true);
-        } else if (response.status === 201) {
+        if (response.returnCode === "Failure") {
+          this.showToast(true, response.info.peerErrors[0].errMsg);
+        } else {
           var manufacturerData = this.state.row;
           manufacturerData.push(data);
           this.setState({
             row: manufacturerData,
           });
-          this.showToast(false);
+          this.showToast(false, "PO created successfully!!");
         }
-        return response;
       })
       .catch((error) => {
         this.setState({
           showProgress: false,
         });
-        this.showToast(true);
+        this.showToast(true, "Error creating PO");
       });
   }
 
-  showToast(error) {
+  showToast(error, msg) {
     if (error) {
-      toast.error("PO already exists!!");
+      toast.error(msg);
     } else {
-      toast.success("PO created successfully.");
+      toast.success(msg);
     }
   }
 }

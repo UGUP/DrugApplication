@@ -10,11 +10,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export default class CreatePurchaseOrderDialogue extends React.Component {
   constructor(props) {
     super();
-    console.log(JSON.stringify(props, null, 2));
-  }
-
-  componentDidMount() {
-    this.props.onPurchaseOrderDialogClosed();
+    this.state = {
+      buyerCRN: "",
+      sellerCRN: "",
+      drugName: "",
+      quantity: "",
+      organization: "distributor"
+    }
   }
 
   render() {
@@ -37,7 +39,10 @@ export default class CreatePurchaseOrderDialogue extends React.Component {
               margin="dense"
               id="BuyerCRN"
               label="BuyerCRN"
-              type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ buyerCRN: value });
+              }}
               fullWidth
             />
             <TextField
@@ -45,7 +50,10 @@ export default class CreatePurchaseOrderDialogue extends React.Component {
               margin="dense"
               id="SellerCRN"
               label="SellerCRN"
-              type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ sellerCRN: value });
+              }}
               fullWidth
             />
             <TextField
@@ -53,7 +61,10 @@ export default class CreatePurchaseOrderDialogue extends React.Component {
               margin="dense"
               id="DrugName"
               label="DrugName"
-              type="email"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ drugName: value });
+              }}
               fullWidth
             />
             <TextField
@@ -61,35 +72,23 @@ export default class CreatePurchaseOrderDialogue extends React.Component {
               margin="dense"
               id="Quantity"
               label="Quantity"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="ListOfAssets"
-              label="ListOfAssets"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="OrganizationRole"
-              label="OrganizationRole"
-              type="email"
+              type="number"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ quantity: value });
+              }}
               fullWidth
             />
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={this.props.onPurchaseOrderDialogClosed}
+              onClick={() => this.props.onPurchaseOrderDialogClosed(this.state)}
               color="primary"
             >
               Cancel
             </Button>
             <Button
-              onClick={this.props.onPurchaseOrderDialogClosed}
+              onClick={() => this.props.onPurchaseOrderDialogClosed(this.state)}
               color="primary"
             >
               Submit
