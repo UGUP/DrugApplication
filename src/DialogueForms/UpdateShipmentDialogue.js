@@ -13,10 +13,6 @@ export default class UpdateShipmentDialogue extends React.Component {
     console.log(JSON.stringify(props, null, 2));
   }
 
-  componentDidMount() {
-    this.props.onShipmentDialogClosed();
-  }
-
   render() {
     return (
       <div>
@@ -36,6 +32,7 @@ export default class UpdateShipmentDialogue extends React.Component {
               id="BuyerCRN"
               label="BuyerCRN"
               type="email"
+              value={this.props.shipmentDetails ? this.props.shipmentDetails.buyerCRN : ""}
               fullWidth
             />
             <TextField
@@ -44,6 +41,7 @@ export default class UpdateShipmentDialogue extends React.Component {
               id="DrugName"
               label="DrugName"
               type="email"
+              value={this.props.shipmentDetails ? this.props.shipmentDetails.drugName : ""}
               fullWidth
             />
             <TextField
@@ -52,22 +50,16 @@ export default class UpdateShipmentDialogue extends React.Component {
               id="Transporter"
               label="Transporter"
               type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="OrganizationRole"
-              label="OrganizationRole"
-              type="email"
+              value={this.props.shipmentDetails ? this.props.shipmentDetails.transporterCRN : ""}
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={() => 
+              {this.props.onShipmentDialogClosed(this.props.shipmentDetails)}} color="primary">
               Update Shipment
             </Button>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={() => this.props.onShipmentDialogClosed(this.state)} color="primary">
               Cancel
             </Button>
           </DialogActions>

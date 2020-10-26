@@ -91,7 +91,7 @@ export default class DistributorList extends React.Component {
             this.handleClick();
           }}
         >
-          Create Organization
+          Create Distributor
         </button>
         <Registerorganization
           openCreateOrganizationDialogue={

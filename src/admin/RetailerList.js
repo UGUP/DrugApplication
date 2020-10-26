@@ -92,7 +92,7 @@ export default class RetailerList extends React.Component {
             this.handleClick();
           }}
         >
-          Create Organization
+          Create Retailer
         </button>
         <Registerorganization
           openCreateOrganizationDialogue={
@@ -123,6 +123,7 @@ export default class RetailerList extends React.Component {
     });
     return dummyData;
   }
+  
   createNewOrganization(data) {
     const args = [];
     args.push(data.companyCRN);

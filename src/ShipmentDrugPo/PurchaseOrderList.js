@@ -12,6 +12,7 @@ import CreatePurchaseOrderDialogue from "../DialogueForms/CreatePurchaseOrderDia
 import { invokeTransaction, METHOD_CREATE_PO } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {poList} from "../data/GlobalData"
 
 const toast = ToastServive.new({
   place: "topRight",
@@ -119,29 +120,7 @@ export default class ManufacturerList extends React.Component {
   }
 
   initiStateWithDummyData() {
-    let dummyData = [];
-    dummyData.push({
-      buyerCRN: "DIST001",
-      sellerCRN: "MAN001",
-      drugName: "Paracetamol",
-      quantity: "3",
-      organization: "distributor",
-    });
-    dummyData.push({
-      buyerCRN: "DIST002",
-      sellerCRN: "MAN002",
-      drugName: "Paracetamol-2",
-      quantity: "4",
-      organization: "distributor",
-    });
-    dummyData.push({
-      buyerCRN: "DIST003",
-      sellerCRN: "MAN003",
-      drugName: "Paracetamol-3",
-      quantity: "5",
-      organization: "manufacturer",
-    });
-    return dummyData;
+    return poList;
   }
 
   createNewPO(data) {
@@ -150,7 +129,7 @@ export default class ManufacturerList extends React.Component {
     args.push(data.sellerCRN);
     args.push(data.drugName);
     args.push(data.quantity);
-    args.push("manufacturer");
+    args.push("distributor");
     this.setState({
       showProgress: true,
     });

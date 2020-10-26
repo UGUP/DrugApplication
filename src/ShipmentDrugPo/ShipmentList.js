@@ -7,14 +7,16 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import updateShipmentDialogue from "../DialogueForms/UpdateShipmentDialogue";
+import UpdateShipmentDialogue from "../DialogueForms/UpdateShipmentDialogue";
 import CreateShipmentDialogue from "../DialogueForms/CreateShipmentDialogue";
 import {
   invokeTransaction,
   METHOD_CREATE_SHIPMENT,
+  METHOD_UPDATE_SHIPMENT
 } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {shipmentList} from "../data/GlobalData"
 
 const toast = ToastServive.new({
   place: "topRight",
@@ -32,7 +34,8 @@ export default class ShipmentList extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.onDialogClosed = this.onDialogClosed.bind(this);
+    this.onShipmentDialogClosed = this.onShipmentDialogClosed.bind(this);
+    this.onUpdateShipmentDialogClosed = this.onUpdateShipmentDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -41,16 +44,19 @@ export default class ShipmentList extends React.Component {
     },
   });
 
-  onDialogClosed(data) {
+  onUpdateShipmentDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      this.createNewShipment(data);
+      console.log("Hello " + JSON.stringify(data));
+      this.createNewShipment1234(data);
     }
     this.setState({
       openCreateShipmentDialogue: false,
     });
   }
 
+
   onShipmentDialogClosed(data) {
+    this.updateShipment(data);
     this.setState({
       openUpdateShipmentDialogue: false,
     });
@@ -65,7 +71,7 @@ export default class ShipmentList extends React.Component {
   showShipmentDetails(shipment) {
     this.setState({
       updateShipmentDialogue: shipment,
-      showShipmentDetails: true,
+      openUpdateShipmentDialogue: true,
     });
   }
 
@@ -85,17 +91,19 @@ export default class ShipmentList extends React.Component {
           <Table className={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align="right">Company CRN</TableCell>
-                <TableCell align="right">Company Name</TableCell>
-                <TableCell align="right">Location</TableCell>
+                <TableCell align="right">Buyer CRN</TableCell>
+                <TableCell align="right">Drug Name</TableCell>
+                <TableCell align="right">List of Asset</TableCell>
+                <TableCell align="right">Transporter CRN</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.state.row.map((row) => (
                 <TableRow key={row.companyCRN}>
-                  <TableCell align="right">{row.companyCRN}</TableCell>
-                  <TableCell align="right">{row.companyName}</TableCell>
-                  <TableCell align="right">{row.location}</TableCell>
+                  <TableCell align="right">{row.buyerCRN}</TableCell>
+                  <TableCell align="right">{row.drugName}</TableCell>
+                  <TableCell align="right">{row.listOfAsset}</TableCell>
+                  <TableCell align="right">{row.transporterCRN}</TableCell>
                   <button
                     onClick={() => {
                       this.showShipmentDetails(row);
@@ -117,9 +125,10 @@ export default class ShipmentList extends React.Component {
         </button>
         <CreateShipmentDialogue
           openCreateShipmentDialogue={this.state.openCreateShipmentDialogue}
-          onDialogClosed={this.onDialogClosed}
+          onUpdateShipmentDialogClosed={this.onUpdateShipmentDialogClosed}
         />
-        <updateShipmentDialogue
+        <UpdateShipmentDialogue
+          shipmentDetails={this.state.updateShipmentDialogue}
           openUpdateShipmentDialogue={this.state.openUpdateShipmentDialogue}
           onShipmentDialogClosed={this.onShipmentDialogClosed}
         />
@@ -128,59 +137,77 @@ export default class ShipmentList extends React.Component {
   }
 
   initiStateWithDummyData() {
-    let dummyData = [];
-    dummyData.push({
-      companyCRN: "Retailer1",
-      companyName: "Retailer",
-      location: "Ludhiana",
-    });
-    dummyData.push({
-      companyCRN: "Retailer",
-      companyName: "Retailer2",
-      location: "Bangalore",
-    });
-    dummyData.push({
-      companyCRN: "Retailer",
-      companyName: "Retailer3",
-      location: "MP",
-    });
-    return dummyData;
+  
+    return shipmentList;
   }
 
-  createNewShipment(data) {
+  createNewShipment1234(data) {
     const args = [];
-    args.push(data.companyCRN);
-    args.push(data.companyName);
-    args.push(data.location);
+    args.push(data.buyerCRN);
+    args.push(data.drugName);
+    args.push(data.listOfAsset);
+    args.push(data.transporterCRN);
     this.setState({
       showProgress: true,
     });
 
     invokeTransaction(METHOD_CREATE_SHIPMENT, args)
-    .then((response) => {
-      return response.json();
-    })
-    .then(response => {
-      this.setState({
-        showProgress: false,
-      });
-      if (response.returnCode === "Failure") {
-        this.showToast(true, response.info.peerErrors[0].errMsg);
-      } else {
-        var manufacturerData = this.state.row;
-        manufacturerData.push(data);
+      .then((response) => {
+        return response.json();
+      })
+      .then(response => {
         this.setState({
-          row: manufacturerData,
+          showProgress: false,
         });
-        this.showToast(false, "Shipment created successfully.");
-      }
-    })
-    .catch((error) => {
-      this.setState({
-        showProgress: false,
+        if (response.returnCode === "Failure") {
+          this.showToast(true, response.info.peerErrors[0].errMsg);
+        } else {
+          data.index = this.state.row.length;
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData,
+          });
+          this.showToast(false, "Shipment created successfully.");
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true, "Failed to create shipment.");
       });
-      this.showToast(true, "Failed to create shipment.");
+  }
+
+  updateShipment(data) {
+    const args = [];
+    args.push(data.buyerCRN);
+    args.push(data.drugName);
+    args.push(data.transporterCRN);
+    this.setState({
+      showProgress: true,
     });
+
+    invokeTransaction(METHOD_UPDATE_SHIPMENT, args)
+      .then((response) => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({
+          showProgress: false,
+        });
+        if (response.returnCode === "Failure") {
+          this.showToast(true, response.info.peerErrors[0].errMsg);
+        } else {
+          this.showToast(false, "Shipment updated successfully.");
+        }
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true, "Failed to update shipment.");
+      });
   }
 
   showToast(error, msg) {

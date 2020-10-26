@@ -12,6 +12,7 @@ import { invokeTransaction, METHOD_CREATE_DRUG } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ViewDrugDetails from "./ViewDrugDetails";
+import {drugList} from "../data/GlobalData"
 
 const toast = ToastServive.new({
   place: "topRight",
@@ -42,6 +43,7 @@ export default class DrugList extends React.Component {
   });
 
   onDialogClosedForDrug(data) {
+    console.log("I am here 45");
     if (data && data.companyCRN != "") {
       this.createNewDrug(data);
     }
@@ -96,10 +98,10 @@ export default class DrugList extends React.Component {
               {this.state.row.map((row) => (
                 <TableRow key={row.companyCRN}>
                   <TableCell align="right">{row.drugName}</TableCell>
-                  <TableCell align="right">{row.sno}</TableCell>
-                  <TableCell align="right">{row.mDate}</TableCell>
-                  <TableCell align="right">{row.eDate}</TableCell>
-                  <TableCell align="right">{row.companyCrn}</TableCell>
+                  <TableCell align="right">{row.serialNo}</TableCell>
+                  <TableCell align="right">{row.mfgDate}</TableCell>
+                  <TableCell align="right">{row.expDate}</TableCell>
+                  <TableCell align="right">{row.companyCRN}</TableCell>
                   <div>
                   <button
                     onClick={() => {
@@ -144,32 +146,7 @@ export default class DrugList extends React.Component {
   }
 
   initiStateWithDummyData() {
-    let dummyData = [];
-    dummyData.push({
-      drugName: "Combliflam",
-      serialNo: "123433d3r3f234",
-      mfgDate: "20-02-2020",
-      expDate: "20-02-2025",
-      companyCRN: "001",
-      organization: "organization",
-    });
-    dummyData.push({
-      drugName: "Zupar",
-      serialNo: "123433d3r3f234",
-      mfgDate: "20-02-2020",
-      eDate: "20-02-2025",
-      companyCRN: "002",
-      organization: "organization",
-    });
-    dummyData.push({
-      drugName: "Sumo",
-      serialNo: "123433d3r3f234",
-      mfgDate: "20-02-2020",
-      expDate: "20-02-2025",
-      companyCRN: "003",
-      organization: "organization",
-    });
-    return dummyData;
+    return drugList;
   }
 
   createNewDrug(data) {
@@ -183,18 +160,21 @@ export default class DrugList extends React.Component {
     this.setState({
       showProgress: true,
     });
-
+    console.log("Reached here now 187");
     invokeTransaction(METHOD_CREATE_DRUG, args)
       .then((response) => {
         return response.json();
       })
       .then(response => {
+        console.log("Reached here now 193");
         this.setState({
           showProgress: false,
         });
         if (response.returnCode === "Failure") {
+          console.log("Reached here now 198");
           this.showToast(true, response.info.peerErrors[0].errMsg);
         } else {
+          console.log("Reached here now 201");
           var manufacturerData = this.state.row;
           manufacturerData.push(data);
           this.setState({
@@ -204,10 +184,11 @@ export default class DrugList extends React.Component {
         }
       })
       .catch((error) => {
+        console.log("Reached here now 211");
         this.setState({
           showProgress: false,
         });
-        this.showToast(true);
+        this.showToast(true, "Failed to create drug.");
       });
   }
 

@@ -11,9 +11,10 @@ export default class CreateShipmentDialogue extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      companyCRN: "",
-      companyName: "",
-      location: "",
+      buyerCRN: "",
+      drugName: "",
+      listOfAsset: "",
+      transporterCRN: "",
       organization: "manufacturer"
     }
   }
@@ -23,7 +24,7 @@ export default class CreateShipmentDialogue extends React.Component {
       <div>
         <Dialog
           open={this.props.openCreateShipmentDialogue}
-          onClose={() => this.props.onDialogClosed()}
+          onClose={() => this.props.onUpdateShipmentDialogClosed()}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Create Shipments</DialogTitle>
@@ -34,42 +35,53 @@ export default class CreateShipmentDialogue extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="companyCRN"
-              label="Company CRN"
+              id="buyerCRN"
+              label="Buyer CRN"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ companyCRN: value });
+                this.setState({ buyerCRN: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="companyName"
-              label="Company Name"
+              id="drugName"
+              label="Drug Name"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ companyName: value });
+                this.setState({ drugName: value });
               }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="location"
+              id="listOfAsset"
+              label="List of Asset"
               onChange={event => {
                 const { value } = event.target;
-                this.setState({ location: value });
+                this.setState({ listOfAsset: value });
               }}
-              label="Location"
+              fullWidth
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="transporterCRN"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ transporterCRN: value });
+              }}
+              label="Transporter CRN"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.props.onDialogClosed(this.state)} color="primary">
+            <Button onClick={() => this.props.onUpdateShipmentDialogClosed(this.state)} color="primary">
               Create Shipment
             </Button>
-            <Button onClick={() => this.props.onDialogClosed(this.state)} color="primary">
+            <Button onClick={() => this.props.onUpdateShipmentDialogClosed(this.state)} color="primary">
               Cancel
             </Button>
           </DialogActions>

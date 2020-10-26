@@ -9,6 +9,7 @@ export const METHOD_REGISTER_COMPANY = "registerCompany";
 export const METHOD_CREATE_DRUG = "addDrug";
 export const METHOD_CREATE_PO = "createPO";
 export const METHOD_CREATE_SHIPMENT = "createShipment";
+export const METHOD_UPDATE_SHIPMENT = "updateShipment";
 
 export const METHOD_VIEW_CURRENT_STATE = "viewDrugCurrentState";
 

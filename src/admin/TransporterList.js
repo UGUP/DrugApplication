@@ -92,7 +92,7 @@ export default class TransporterList extends React.Component {
             this.handleClick();
           }}
         >
-          Create Organization
+          Create Transporter
         </button>
         <Registerorganization
           openCreateOrganizationDialogue={

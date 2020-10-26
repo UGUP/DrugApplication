@@ -40,7 +40,7 @@ export default class ViewDrugDetails extends React.Component {
         <Dialog
           open={this.props.openViewDrugDetailsDialog}
           onClose={() => this.props.onViewDrugDetailsDialogClosed()}
-          onEntered={() => this.getCurrentStatusOfShipment(this.props.drugDetails.drugName, this.props.drugDetails.sno)}//"Paracetamol", "001"
+          onEntered={() => this.getCurrentStatusOfShipment(this.props.drugDetails.drugName, this.props.drugDetails.serialNo)}//"Paracetamol", "001"
           aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Drug History</DialogTitle>
           <DialogContent>

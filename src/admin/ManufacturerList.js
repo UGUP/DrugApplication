@@ -92,7 +92,7 @@ export default class ManufacturerList extends React.Component {
             this.handleClick();
           }}
         >
-          Create Organization
+          Create Manufacturer
         </button>
         <Registerorganization
           openCreateOrganizationDialogue={
