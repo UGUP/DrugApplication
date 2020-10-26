@@ -8,6 +8,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Registerorganization from "../DialogueForms/Registerorganization";
+import ToastServive from "react-material-toast";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import {
+  invokeTransaction,
+  METHOD_REGISTER_COMPANY,
+} from "../network/NetworkApi";
+
+const toast = ToastServive.new({
+  place: "topRight",
+  duration: 4,
+  maxCount: 1,
+});
 
 export default class TransporterList extends React.Component {
   constructor(props) {
@@ -29,12 +42,7 @@ export default class TransporterList extends React.Component {
 
   onDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      console.log(data);
-      var transporterData = this.state.row;
-      transporterData.push(data);
-      this.setState({
-        row: transporterData,
-      });
+      this.createNewOrganization(data);
     }
     this.setState({
       openCreateOrganizationDialogue: false,
@@ -50,6 +58,15 @@ export default class TransporterList extends React.Component {
   render() {
     return (
       <div>
+        {(() => {
+          if (this.state.showProgress) {
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="secondary" />
+              </div>
+            );
+          }
+        })()}
         <TableContainer component={Paper}>
           <Table className={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -105,5 +122,46 @@ export default class TransporterList extends React.Component {
       location: "MP",
     });
     return dummyData;
+  }
+  createNewOrganization(data) {
+    const args = [];
+    args.push(data.companyCRN);
+    args.push(data.companyName);
+    args.push(data.location);
+    args.push("transporter");
+    this.setState({
+      showProgress: true,
+    });
+    invokeTransaction(METHOD_REGISTER_COMPANY, args)
+      .then((response) => {
+        this.setState({
+          showProgress: false,
+        });
+        if (response.status === 400) {
+          this.showToast(true);
+        } else if (response.status === 201) {
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData,
+          });
+          this.showToast(false);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true);
+      });
+  }
+
+  showToast(error) {
+    if (error) {
+      toast.error("Organization already exists!!");
+    } else {
+      toast.success("Organization created successfully.");
+    }
   }
 }

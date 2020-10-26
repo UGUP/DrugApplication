@@ -1,32 +1,34 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Registerorganization from '../DialogueForms/Registerorganization'
-import { invokeTransaction, METHOD_REGISTER_COMPANY } from '../network/NetworkApi'
-import ToastServive from 'react-material-toast';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Registerorganization from "../DialogueForms/Registerorganization";
+import {
+  invokeTransaction,
+  METHOD_REGISTER_COMPANY,
+} from "../network/NetworkApi";
+import ToastServive from "react-material-toast";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const toast = ToastServive.new({
-  place: 'topRight',
+  place: "topRight",
   duration: 4,
-  maxCount: 1
+  maxCount: 1,
 });
 
 export default class ManufacturerList extends React.Component {
-
   constructor(props) {
     super();
     this.state = {
       row: this.initiStateWithDummyData(),
       openCreateOrganizationDialogue: false,
-      showProgress: false
-    }
+      showProgress: false,
+    };
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
@@ -43,13 +45,13 @@ export default class ManufacturerList extends React.Component {
       this.createNewOrganization(data);
     }
     this.setState({
-      openCreateOrganizationDialogue: false
+      openCreateOrganizationDialogue: false,
     });
   }
 
   handleClick() {
     this.setState({
-      openCreateOrganizationDialogue: true
+      openCreateOrganizationDialogue: true,
     });
   }
 
@@ -59,10 +61,10 @@ export default class ManufacturerList extends React.Component {
         {(() => {
           if (this.state.showProgress) {
             return (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <CircularProgress color="secondary" />
               </div>
-            )
+            );
           }
         })()}
         <TableContainer component={Paper}>
@@ -85,8 +87,19 @@ export default class ManufacturerList extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
-        <button onClick={() => { this.handleClick() }}>Create Organization</button>
-        <Registerorganization openCreateOrganizationDialogue={this.state.openCreateOrganizationDialogue} onDialogClosed={this.onDialogClosed} />
+        <button
+          onClick={() => {
+            this.handleClick();
+          }}
+        >
+          Create Organization
+        </button>
+        <Registerorganization
+          openCreateOrganizationDialogue={
+            this.state.openCreateOrganizationDialogue
+          }
+          onDialogClosed={this.onDialogClosed}
+        />
       </div>
     );
   }
@@ -94,63 +107,62 @@ export default class ManufacturerList extends React.Component {
   initiStateWithDummyData() {
     let dummyData = [];
     dummyData.push({
-      "companyCRN": "MAN001",
-      "companyName": "Sun Pharma1",
-      "location": "location"
+      companyCRN: "MAN001",
+      companyName: "Sun Pharma1",
+      location: "location",
     });
     dummyData.push({
-      "companyCRN": "MAN002",
-      "companyName": "Sun Pharma2",
-      "location": "location2"
+      companyCRN: "MAN002",
+      companyName: "Sun Pharma2",
+      location: "location2",
     });
     dummyData.push({
-      "companyCRN": "MAN003",
-      "companyName": "Sun Pharma3",
-      "location": "location3"
+      companyCRN: "MAN003",
+      companyName: "Sun Pharma3",
+      location: "location3",
     });
     return dummyData;
   }
 
   createNewOrganization(data) {
     const args = [];
-    args.push(data.companyCRN)
-    args.push(data.companyName)
-    args.push(data.location)
-    args.push("manufacturer")
+    args.push(data.companyCRN);
+    args.push(data.companyName);
+    args.push(data.location);
+    args.push("manufacturer");
     this.setState({
-      showProgress: true
-    })
+      showProgress: true,
+    });
     invokeTransaction(METHOD_REGISTER_COMPANY, args)
       .then((response) => {
         this.setState({
-          showProgress: false
-        })
+          showProgress: false,
+        });
         if (response.status === 400) {
           this.showToast(true);
         } else if (response.status === 201) {
           var manufacturerData = this.state.row;
           manufacturerData.push(data);
           this.setState({
-            row: manufacturerData
-          })
+            row: manufacturerData,
+          });
           this.showToast(false);
         }
         return response;
       })
       .catch((error) => {
         this.setState({
-          showProgress: false
-        })
+          showProgress: false,
+        });
         this.showToast(true);
       });
   }
 
   showToast(error) {
     if (error) {
-      toast.error('Organization already exists!!');
+      toast.error("Organization already exists!!");
     } else {
       toast.success("Organization created successfully.");
     }
   }
-
 }
