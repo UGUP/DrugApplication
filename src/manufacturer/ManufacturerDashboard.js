@@ -1,7 +1,8 @@
 import React from "react";
 import ManufacturerMenu from "./ManufacturerMenu";
 import DrugList from "../ShipmentDrugPo/DrugList";
-import ManufacturerPOList from "../ShipmentDrugPo/ManufacturerPOList";
+import PurchaseOrderList from "../ShipmentDrugPo/PurchaseOrderList";
+//import ManufacturerPOList from "../ShipmentDrugPo/ManufacturerPOList";
 import ShipmentList from "../ShipmentDrugPo/ShipmentList";
 import styled from "styled-components";
 
@@ -61,7 +62,7 @@ class ManufacturerDashboard extends React.Component {
               case "drug":
                 return <DrugList />;
               case "purcahse-order":
-                return <ManufacturerPOList />;
+                return <PurchaseOrderList />;
               case "shipment":
                 return <ShipmentList />;
               default:

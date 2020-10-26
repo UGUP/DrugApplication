@@ -10,6 +10,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export default class CreateDrugDialogue extends React.Component {
   constructor(props) {
     super();
+    this.state = {
+      showProgress: false,
+    };
     console.log(JSON.stringify(props, null, 2));
   }
 
@@ -50,7 +53,7 @@ export default class CreateDrugDialogue extends React.Component {
               autoFocus
               margin="dense"
               id="manufacturer-date"
-              label="Manufacturer Date"
+              label="ManufacturingDate"
               type="email"
               fullWidth
             />
@@ -58,7 +61,7 @@ export default class CreateDrugDialogue extends React.Component {
               autoFocus
               margin="dense"
               id="expiry-date"
-              label="Expiry Date"
+              label="ExpiryDate"
               type="email"
               fullWidth
             />
@@ -66,7 +69,7 @@ export default class CreateDrugDialogue extends React.Component {
               autoFocus
               margin="dense"
               id="company-crn"
-              label="Company CRN"
+              label="CompanyCRN"
               type="email"
               fullWidth
             />

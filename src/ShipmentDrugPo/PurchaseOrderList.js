@@ -9,6 +9,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import PurchaseOrderDetails from "./PurchaseOrderDetails";
 import CreatePurchaseOrderDialogue from "../DialogueForms/CreatePurchaseOrderDialogue";
+import { invokeTransaction, METHOD_CREATE_PO } from "../network/NetworkApi";
+import ToastServive from "react-material-toast";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+const toast = ToastServive.new({
+  place: "topRight",
+  duration: 4,
+  maxCount: 1,
+});
 
 export default class ManufacturerList extends React.Component {
   constructor(props) {
@@ -25,7 +34,7 @@ export default class ManufacturerList extends React.Component {
       this
     );
 
-    this.onViewDialogClosed = this.onViewDialogClosed.bind(this);
+    // this.onViewDialogClosed = this.onViewDialogClosed.bind(this);
   }
 
   useStyles = makeStyles({
@@ -36,14 +45,8 @@ export default class ManufacturerList extends React.Component {
 
   onPurchaseOrderDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      console.log(data);
-      var manufacturerData = this.state.row;
-      manufacturerData.push(data);
-      this.setState({
-        row: manufacturerData,
-      });
+      this.createNewPO(data);
     }
-    console.log("here ------");
     this.setState({
       openCreatePurchaseOrderDialogue: false,
     });
@@ -143,8 +146,51 @@ export default class ManufacturerList extends React.Component {
       sellerCRN: "MAN003",
       drugName: "Paracetamol-3",
       quantity: "5",
-      organization: "distributor",
+      organization: "manufacturer",
     });
     return dummyData;
+  }
+  createNewPO(data) {
+    const args = [];
+    args.push(data.buyerCRN);
+    args.push(data.sellerCRN);
+    args.push(data.drugName);
+    args.push(data.quantity);
+    args.push(data.organization);
+    args.push("manufacturer");
+    this.setState({
+      showProgress: true,
+    });
+    invokeTransaction(METHOD_CREATE_PO, args)
+      .then((response) => {
+        this.setState({
+          showProgress: false,
+        });
+        if (response.status === 400) {
+          this.showToast(true);
+        } else if (response.status === 201) {
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData,
+          });
+          this.showToast(false);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true);
+      });
+  }
+
+  showToast(error) {
+    if (error) {
+      toast.error("PO already exists!!");
+    } else {
+      toast.success("PO created successfully.");
+    }
   }
 }

@@ -9,6 +9,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CreateDrugDialogue from "../DialogueForms/CreateDrugDialogue";
 import ViewDrugDetailsDialogue from "../DialogueForms/ViewDrugDetailsDialogue";
+import { invokeTransaction, METHOD_CREATE_DRUG } from "../network/NetworkApi";
+import ToastServive from "react-material-toast";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+const toast = ToastServive.new({
+  place: "topRight",
+  duration: 4,
+  maxCount: 1,
+});
 
 export default class DrugList extends React.Component {
   constructor(props) {
@@ -31,12 +40,7 @@ export default class DrugList extends React.Component {
 
   onDialogClosed(data) {
     if (data && data.companyCRN != "") {
-      console.log(data);
-      var distributorData = this.state.row;
-      distributorData.push(data);
-      this.setState({
-        row: distributorData,
-      });
+      this.createNewDrug(data);
     }
     this.setState({
       openCreateDrugDialogue: false,
@@ -65,6 +69,15 @@ export default class DrugList extends React.Component {
   render() {
     return (
       <div>
+        {(() => {
+          if (this.state.showProgress) {
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CircularProgress color="secondary" />
+              </div>
+            );
+          }
+        })()}
         <TableContainer component={Paper}>
           <Table className={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -140,5 +153,49 @@ export default class DrugList extends React.Component {
       companyCrn: "location",
     });
     return dummyData;
+  }
+
+  createNewDrug(data) {
+    const args = [];
+    args.push(data.drugName);
+    args.push(data.serialNumber);
+    args.push(data.manufacturingDate);
+    args.push(data.expiryDate);
+    args.push(data.companyCRN);
+    args.push("manufacturer");
+    this.setState({
+      showProgress: true,
+    });
+    invokeTransaction(METHOD_CREATE_DRUG, args)
+      .then((response) => {
+        this.setState({
+          showProgress: false,
+        });
+        if (response.status === 400) {
+          this.showToast(true);
+        } else if (response.status === 201) {
+          var manufacturerData = this.state.row;
+          manufacturerData.push(data);
+          this.setState({
+            row: manufacturerData,
+          });
+          this.showToast(false);
+        }
+        return response;
+      })
+      .catch((error) => {
+        this.setState({
+          showProgress: false,
+        });
+        this.showToast(true);
+      });
+  }
+
+  showToast(error) {
+    if (error) {
+      toast.error("Drug already exists!!");
+    } else {
+      toast.success("Drug created successfully.");
+    }
   }
 }
