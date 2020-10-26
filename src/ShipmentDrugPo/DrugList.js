@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CreateDrugDialogue from "../DialogueForms/CreateDrugDialogue";
-import ViewDrugDetailsDialogue from "../DialogueForms/ViewDrugDetailsDialogue";
 import { invokeTransaction, METHOD_CREATE_DRUG } from "../network/NetworkApi";
 import ToastServive from "react-material-toast";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -16,7 +15,7 @@ import ViewDrugDetails from "./ViewDrugDetails";
 
 const toast = ToastServive.new({
   place: "topRight",
-  duration: 4,
+  duration: 5,
   maxCount: 1,
 });
 
@@ -30,7 +29,7 @@ export default class DrugList extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.onDialogClosed = this.onDialogClosed.bind(this);
+    this.onDialogClosedForDrug = this.onDialogClosedForDrug.bind(this);
     this.onViewDrugDetailsDialogClosed = this.onViewDrugDetailsDialogClosed.bind(
       this
     );
@@ -42,14 +41,13 @@ export default class DrugList extends React.Component {
     },
   });
 
-  onDialogClosed(data) {``
-    console.log("Hello......");
+  onDialogClosedForDrug(data) {
     if (data && data.companyCRN != "") {
       this.createNewDrug(data);
     }
-    // this.setState({
-    //   openCreateDrugDialogue: false,
-    // });
+    this.setState({
+      openCreateDrugDialogue: false,
+    });
   }
 
   onViewDrugDetailsDialogClosed() {
@@ -124,7 +122,7 @@ export default class DrugList extends React.Component {
 
         <CreateDrugDialogue
           openCreateDrugDialogue={this.state.openCreateDrugDialogue}
-          onDialogClosed={this.onDialogClosed}
+          onDialogClosedForDrug={this.onDialogClosedForDrug}
         />
 
         <ViewDrugDetails
@@ -170,7 +168,7 @@ export default class DrugList extends React.Component {
     args.push(data.drugName);
     args.push(data.serialNo);
     args.push(data.mfgDate);
-    args.push(data.eDate);
+    args.push(data.expDate);
     args.push(data.companyCRN);
     args.push("manufacturer");
     this.setState({
@@ -179,20 +177,22 @@ export default class DrugList extends React.Component {
 
     invokeTransaction(METHOD_CREATE_DRUG, args)
       .then((response) => {
+        return response.json();
+      })
+      .then(response => {
         this.setState({
           showProgress: false,
         });
-        if (response.status === 400) {
-          this.showToast(true);
-        } else if (response.status === 201) {
+        if (response.returnCode === "Failure") {
+          this.showToast(true, response.info.peerErrors[0].errMsg);
+        } else {
           var manufacturerData = this.state.row;
           manufacturerData.push(data);
           this.setState({
             row: manufacturerData,
           });
-          this.showToast(false);
+          this.showToast(false, "Drug created successfully.");
         }
-        return response;
       })
       .catch((error) => {
         this.setState({
@@ -202,11 +202,12 @@ export default class DrugList extends React.Component {
       });
   }
 
-  showToast(error) {
+  showToast(error, msg) {
     if (error) {
-      toast.error("Drug already exists!!");
+      toast.error(msg);
     } else {
-      toast.success("Drug created successfully.");
+      toast.success(msg);
     }
   }
+
 }

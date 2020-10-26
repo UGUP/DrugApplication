@@ -26,7 +26,7 @@ export default class CreateDrugDialogue extends React.Component {
       <div>
         <Dialog
           open={this.props.openCreateDrugDialogue}
-          onClose={() => this.props.onDialogClosed()}
+          onClose={() => this.props.onDialogClosedForDrug()}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Create Drug</DialogTitle>
@@ -96,10 +96,10 @@ export default class CreateDrugDialogue extends React.Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.onDialogClosed(this.state)} color="primary">
+            <Button onClick={() => this.props.onDialogClosedForDrug(this.state)} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.props.onDialogClosed(this.state)} color="primary">
+            <Button onClick={() => this.props.onDialogClosedForDrug(this.state)} color="primary">
               Create Drug
             </Button>
           </DialogActions>
