@@ -119,7 +119,7 @@ export default class ManufacturerList extends React.Component {
         <PurchaseOrderDetails
           purchaseOrderDetials={this.state.purchaseOrderDetials}
           openViewPurchaseDialog={this.state.showPurchaseOrderDetails}
-          onDialogClosed={this.onViewDialogClosed}
+          onDialogClosed={this.onDialogClosed}
         />
       </div>
     );

@@ -18,6 +18,7 @@ const toast = ToastServive.new({
   duration: 4,
   maxCount: 1,
 });
+import ViewDrugDetails from "./ViewDrugDetails";
 
 export default class DrugList extends React.Component {
   constructor(props) {
@@ -25,11 +26,14 @@ export default class DrugList extends React.Component {
     this.state = {
       row: this.initiStateWithDummyData(),
       openCreateDrugDialogue: false,
+      openViewDrugDetailsDialog: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.onDialogClosed = this.onDialogClosed.bind(this);
-    this.onDrugDetailsDialogClosed = this.onDrugDetailsDialogClosed.bind(this);
+    this.onViewDrugDetailsDialogClosed = this.onViewDrugDetailsDialogClosed.bind(
+      this
+    );
   }
 
   useStyles = makeStyles({
@@ -47,16 +51,16 @@ export default class DrugList extends React.Component {
     });
   }
 
-  onDrugDetailsDialogClosed() {
+  onViewDrugDetailsDialogClosed() {
     this.setState({
-      showViewDrugDetailsDialogue: false,
+      openViewDrugDetailsDialog: false,
     });
   }
 
   showViewDrugDetailsDialogue(drug) {
     this.setState({
-      CreateDrugDialogue: drug,
-      showViewDrugDetailsDialogue: true,
+      drugDetails: drug,
+      openViewDrugDetailsDialog: true,
     });
   }
 
@@ -116,14 +120,16 @@ export default class DrugList extends React.Component {
         >
           Create Drug
         </button>
+
         <CreateDrugDialogue
           openCreateDrugDialogue={this.state.openCreateDrugDialogue}
           onDialogClosed={this.onDialogClosed}
         />
-        <ViewDrugDetailsDialogue
-          ViewDrugDetailsDialogue={this.state.ViewDrugDetailsDialogue}
-          openViewDrugDetailsDialogue={this.state.showViewDrugDetailsDialogue}
-          onDrugDetailsDialogClosed={this.onDrugDetailsDialogClosed}
+
+        <ViewDrugDetails
+          drugDetails={this.state.drugDetails}
+          openViewDrugDetailsDialog={this.state.openViewDrugDetailsDialog}
+          onViewDrugDetailsDialogClosed={this.onViewDrugDetailsDialogClosed}
         />
       </div>
     );

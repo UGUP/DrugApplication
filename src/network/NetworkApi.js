@@ -5,8 +5,11 @@ const CHANNEL = "pharmacychannel";
 const CHAINCODE = "PharmaWithArgs";
 
 export const METHOD_REGISTER_COMPANY = "registerCompany";
+
 export const METHOD_CREATE_DRUG = "addDrug";
 export const METHOD_CREATE_PO = "createPO";
+
+export const METHOD_VIEW_CURRENT_STATE = "viewDrugCurrentState";
 
 export function invokeTransaction(methodName, args) {
   return fetch(CORS_PROXY + API_PATH, {
