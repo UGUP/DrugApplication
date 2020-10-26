@@ -155,36 +155,39 @@ export default class ShipmentList extends React.Component {
     this.setState({
       showProgress: true,
     });
+
     invokeTransaction(METHOD_CREATE_SHIPMENT, args)
-      .then((response) => {
-        this.setState({
-          showProgress: false,
-        });
-        if (response.status === 400) {
-          this.showToast(true);
-        } else if (response.status === 201) {
-          var manufacturerData = this.state.row;
-          manufacturerData.push(data);
-          this.setState({
-            row: manufacturerData,
-          });
-          this.showToast(false);
-        }
-        return response;
-      })
-      .catch((error) => {
-        this.setState({
-          showProgress: false,
-        });
-        this.showToast(true);
+    .then((response) => {
+      return response.json();
+    })
+    .then(response => {
+      this.setState({
+        showProgress: false,
       });
+      if (response.returnCode === "Failure") {
+        this.showToast(true, response.info.peerErrors[0].errMsg);
+      } else {
+        var manufacturerData = this.state.row;
+        manufacturerData.push(data);
+        this.setState({
+          row: manufacturerData,
+        });
+        this.showToast(false, "Shipment created successfully.");
+      }
+    })
+    .catch((error) => {
+      this.setState({
+        showProgress: false,
+      });
+      this.showToast(true, "Failed to create shipment.");
+    });
   }
 
-  showToast(error) {
+  showToast(error, msg) {
     if (error) {
-      toast.error("Shipment already exists!!");
+      toast.error(msg);
     } else {
-      toast.success("Shipment created successfully.");
+      toast.success(msg);
     }
   }
 }

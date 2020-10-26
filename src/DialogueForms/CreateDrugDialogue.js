@@ -18,7 +18,6 @@ export default class CreateDrugDialogue extends React.Component {
       companyCRN: "",
       organization: "manufacturer"
     }
-    console.log(JSON.stringify(props, null, 2));
   }
 
   render() {

@@ -10,11 +10,12 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export default class CreateShipmentDialogue extends React.Component {
   constructor(props) {
     super();
-    console.log(JSON.stringify(props, null, 2));
-  }
-
-  componentDidMount() {
-    this.props.onDialogClosed();
+    this.state = {
+      companyCRN: "",
+      companyName: "",
+      location: "",
+      organization: "manufacturer"
+    }
   }
 
   render() {
@@ -33,49 +34,42 @@ export default class CreateShipmentDialogue extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="BuyerCRN"
-              label="BuyerCRN"
-              type="email"
+              id="companyCRN"
+              label="Company CRN"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ companyCRN: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="DrugName"
-              label="DrugName"
-              type="email"
+              id="companyName"
+              label="Company Name"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ companyName: value });
+              }}
               fullWidth
             />
             <TextField
               autoFocus
               margin="dense"
-              id="ListOfAssets"
-              label="ListOfAssets"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="Transporter"
-              label="Transporter"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="OrganizationRole"
-              label="OrganizationRole"
-              type="email"
+              id="location"
+              onChange={event => {
+                const { value } = event.target;
+                this.setState({ location: value });
+              }}
+              label="Location"
               fullWidth
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={() => this.props.onDialogClosed(this.state)} color="primary">
               Create Shipment
             </Button>
-            <Button onClick={this.props.onDialogClosed} color="primary">
+            <Button onClick={() => this.props.onDialogClosed(this.state)} color="primary">
               Cancel
             </Button>
           </DialogActions>
